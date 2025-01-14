@@ -37,7 +37,7 @@ class TaskSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Task
-        fields = ('title', 'description', 'priority', 'giver', 'receiver', 'status' )
+        fields = ('id','title', 'description', 'priority', 'giver', 'receiver', 'status' )
 
     def validate_giver(self, value):
         """Проверяем, что пользователь с таким username существует."""

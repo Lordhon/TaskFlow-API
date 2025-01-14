@@ -1,10 +1,12 @@
-version: '3'
+
 
 services:
   web:
     build:
       context: ./TaskFlow
     container_name: site
+    env_file:
+      - .env
     ports:
       - "8000:8000"
     depends_on:
@@ -13,28 +15,32 @@ services:
     environment:
       DJANGO_SETTINGS_MODULE: TaskFlow.settings
       POSTGRES_HOST: db
-      POSTGRES_PORT: 5432
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: Timofey19
-      POSTGRES_DB: taskflowdb
+      POSTGRES_PORT: ${DB_PORT}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
       REDIS_HOST: redis
-      REDIS_PORT: 6379
+      REDIS_PORT: ${REDIS_HOST}
     command: daphne TaskFlow.asgi:application  # Используем daphne для работы с ASGI
 
   db:
     image: postgres:latest
+    env_file:
+      - .env
     container_name: DB
     ports:
       - "5432:5432"
     environment:
-      POSTGRES_DB: taskflowdb
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: Timofey19
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
     volumes:
       - db_data:/var/lib/postgresql/data
 
   redis:
     image: redis:latest
+    env_file:
+      - .env
     container_name: redis_server
     ports:
       - "6379:6379"

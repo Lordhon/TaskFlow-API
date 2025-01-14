@@ -11,6 +11,10 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 from datetime import timedelta
 from pathlib import Path
+from decouple import config
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
 from django.conf.global_settings import DEFAULT_FROM_EMAIL
 
@@ -22,7 +26,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-6nc(8fx9=*puv1s=lah^k(&f))dw%_(j-obi$cbj04bvxame0y'
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -83,11 +87,11 @@ WSGI_APPLICATION = 'TaskFlow.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'taskflowdb',
-        'USER': 'postgres',
-        'PASSWORD': 'Timofey19',
-        'HOST': 'db',
-        'PORT': '5432',
+        'NAME': config('DB_NAME'),
+        'USER': config('DB_USER'),
+        'PASSWORD': config('DB_PASSWORD'),
+        'HOST': config('DB_HOST'),
+        'PORT': config('DB_PORT'),
     }
 }
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -95,7 +99,7 @@ EMAIL_HOST = 'smtp.yandex.ru'  # Если используете Gmail
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'ivleff.timivlev@yandex.ru'  # Ваш email
-EMAIL_HOST_PASSWORD = 'maqfybggvhgaqwkh'
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 
 
 # Password validation
@@ -141,9 +145,9 @@ SIMPLE_JWT = {
 }
 CHANNEL_LAYERS = {
     "default": {
-        "BACKEND": "channels_redis.core.RedisChannelLayer",  # Используем Redis для управления WebSocket каналами
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": [("redis", 6379)],  # Хост Redis (совпадает с docker-compose)
+            "hosts": [("redis", 6379)],
         },
     },
 }

@@ -27,9 +27,9 @@ class Task(models.Model):
         ('completed', 'Completed'),
     ]
 
-    title = models.CharField(max_length=255)  # Указана максимальная длина
+    title = models.CharField(max_length=255)
     description = models.TextField()
-    priority = models.CharField(choices=PRIORITY_CHOICES, max_length=10)  # Указана максимальная длина
+    priority = models.CharField(choices=PRIORITY_CHOICES, max_length=10)
     giver = models.ForeignKey(User, on_delete=models.CASCADE, related_name='given_tasks' , null=True)
     receiver = models.ForeignKey(User, on_delete=models.CASCADE, related_name='received_tasks',  blank=True)
     created_at = models.DateTimeField(auto_now_add=True)

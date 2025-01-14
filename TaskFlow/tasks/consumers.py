@@ -27,6 +27,7 @@ class TaskConsumer(AsyncWebsocketConsumer):
 
         # Отправляем сообщение всем пользователям в группе
         await self.channel_layer.group_send(
+
             self.room_group_name,
             {
                 'type': 'task_message',  # Название типа события
